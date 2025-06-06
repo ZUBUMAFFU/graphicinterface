@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gráfico de Linhas - x e y</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      
+    }
+    #grafico {
+      width: 800px !important;
+      height: 600px !important;
+    }
+    .buttons{
+      display: flex;
+      flex-direction: column;
+      gap: 10px; 
+      width: 50px; 
+    }
+  </style>
+<body>
+  <div class="buttons">
+    <input type="number" placeholder="x" name="x" id="x" min="0" max="100">
+    <input type="number" placeholder="y" name="y" id="y" min="0" max="500">
+    <input type="button" value="start" id="button">
+  </div>
+  <canvas id="grafico" width="800" height="600"></canvas>
+  <script>
+document.getElementById('button').addEventListener('click', async () => {
+  const x = parseFloat(document.getElementById('x').value);
+  const y = parseFloat(document.getElementById('y').value);
+
+  // Verifica se os valores estão dentro dos limites
+  if (isNaN(x) || isNaN(y)) {
+    alert('Por favor, preencha ambos os valores.');
+    return;
+  }
+
+  if (x < 0 || x > 100) {
+    alert('X deve estar entre 0 e 100.');
+    return;
+  }
+
+  if (y < 0 || y > 500) {
+    alert('Y deve estar entre 0 e 500.');
+    return;
+  }
+
+  try {
+    const resposta = await fetch('https://graphic-rest-api.onrender.com/points', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ x, y })
+    });
+
+    if (!resposta.ok) {
+      throw new Error('Erro ao enviar os dados.');
+    }
+
+    alert('Ponto enviado com sucesso!');
+    location.reload(); // recarrega a página para atualizar o gráfico
+  } catch (erro) {
+    console.error('Erro ao enviar os dados:', erro);
+    alert('Falha ao enviar os dados.');
+  }
+});
+</script>
+  <script>
+    async function carregarGrafico() {
+      try {
+        const resposta = await fetch('https://graphic-rest-api.onrender.com/points'); // sua API
+        const pontos = await resposta.json();
+
+        // Separar valores para labels (x) e dados (y)
+        const labels = pontos.map(p => p.x);
+        const data = pontos.map(p => p.y);
+
+        const ctx = document.getElementById('grafico').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Valores',
+              data: data,
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'X'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Y'
+                },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+      } catch (error) {
+        console.error('Erro ao carregar dados do gráfico:', error);
+      }
+    }
+
+    carregarGrafico();
+  </script>
+</body>
+</html>
