@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <title>Dashboard - Vacas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      background-color: #ecf0f1;
+    }
+
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      background: linear-gradient(180deg, #34495e, #2c3e50);
+      padding: 25px 15px;
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-pic {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 25px;
+      border: 4px solid #ecf0f1;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sidebar button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 30px;
+      background-color: #3498db;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    .sidebar button:hover {
+      background-color: #2980b9;
+      transform: scale(1.03);
+    }
+
+.content {
+  flex: 1;
+  max-width: 900px;
+  margin: 40px 30px;
+  padding: 30px 40px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px;
+  transition: all 0.4s ease;
+}
+
+.page {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  
+}
+
+.page h1 {
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 2.6rem;
+  letter-spacing: 1.1px;
+  text-align: center;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+#search {
+  width: 100%;
+  max-width: 400px;
+  align-self: center;
+  padding: 14px 20px;
+  margin-bottom: 25px;
+  font-size: 1.15rem;
+  border: 2px solid #3498db;
+  border-radius: 30px;
+  outline: none;
+  box-shadow: 0 3px 6px rgba(52, 152, 219, 0.25);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 12px rgba(41, 128, 185, 0.75);
+}
+#search-individual {
+  width: 100%;
+  max-width: 400px;
+  align-self: center;
+  padding: 14px 20px;
+  margin-bottom: 25px;
+  font-size: 1.15rem;
+  border: 2px solid #3498db;
+  border-radius: 30px;
+  outline: none;
+  box-shadow: 0 3px 6px rgba(52, 152, 219, 0.25);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search-individual:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 12px rgba(41, 128, 185, 0.75);
+}
+
+#list {
+  list-style: none;
+  padding: 0;
+  max-height: 450px;
+  overflow-y: auto;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: #fefefe;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+#list li {
+  padding: 18px 25px;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+  color: #34495e;
+  transition: background-color 0.25s ease;
+  cursor: default;
+  user-select: none;
+}
+
+#list li:last-child {
+  border-bottom: none;
+}
+
+#list li:hover {
+  background-color: #d6e9fb;
+}
+  #grafico {
+    
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+}
+.inputs {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.inputs h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.coord-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.inputs input[type="number"] {
+  width: 80px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.inputs input[type="button"] {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.inputs input[type="button"]:hover {
+  background-color: #005f7f;
+}
+
+.inputs2 {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.inputs2 h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.inputs2 input[type="text"] {
+  width: 85%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.inputs2 input[type="button"] {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.inputs2 input[type="button"]:hover {
+  background-color: #1e7e34;
+}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="profile-pic">
+      <img src="icon.jpg" alt="Imagem de Perfil">
+    </div>
+
+    <button onclick="showPage('lista')">Lista de Vacas</button>
+    <button onclick="showPage('global')">Peso Global</button>
+    <button onclick="showPage('individual')">Peso Individual</button>
+    <button onclick="showPage('adicionar')">Adicionar</button>
+  </div>
+
+  <div class="content">
+    <div id="lista" class="page active">
+      <h1>Lista de Vacas</h1>
+      <input type="search" id="search">
+      <ul id="list"></ul>
+    </div>
+
+    <div id="global" class="page">
+      <h1>Peso Global</h1>
+      <canvas id="grafico" width="800" height="400"></canvas>
+    </div>
+
+    <div id="individual" class="page">
+      <h1>Peso Individual</h1>
+      <input type="search" id="search-individual">
+      <ul id="list-individual"></ul>
+    </div>
+
+    <div id="adicionar" class="page">
+      <h1>Adicionar Vacas e Linhas</h1>
+      <div class="inputs">
+            <h1>linhas</h1>
+            <input type="number" placeholder="x" id="x">
+            <input type="number" placeholder="y" id="y">
+            <input type="button" value="Adicionar" id="add">
+      </div>
+      <div class="inputs2">
+            <h1>Vacas</h1>
+            <input type="text" placeholder="tag code" id="tag_code">
+            <input type="number" placeholder="cow weight" id="cow_weight">
+            <input type="button" value="Adicionar" id="add2">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+
+      if (pageId === 'global' && typeof grafico !== 'undefined' && grafico) {
+        setTimeout(() => {
+          grafico.resize();
+        }, 100);
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/add.js"></script>
+  <script src="/js/lister.js"></script>
+  <script src="/js/graphic.js"></script>
+  <script src="/js/lister2.js"></script>
+
+</body>
