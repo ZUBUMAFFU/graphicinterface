@@ -248,6 +248,14 @@
   border-radius: 8px;
   font-size: 16px;
 }
+.inputs2 input[type="number"] {
+  width: 85%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
 
 .inputs2 input[type="button"] {
   padding: 10px 20px;
@@ -266,7 +274,6 @@
   </style>
 </head>
 <body>
-
   <div class="sidebar">
     <div class="profile-pic">
       <img src="icon.jpg" alt="Imagem de Perfil">
@@ -276,12 +283,13 @@
     <button onclick="showPage('global')">Peso Global</button>
     <button onclick="showPage('individual')">Peso Individual</button>
     <button onclick="showPage('adicionar')">Adicionar</button>
+    <button onclick="showPage('remover')">Remover</button>
   </div>
 
   <div class="content">
     <div id="lista" class="page active">
       <h1>Lista de Vacas</h1>
-      <input type="search" id="search">
+      <input type="search" id="search" placeholder="Buscar vaca...">
       <ul id="list"></ul>
     </div>
 
@@ -292,23 +300,41 @@
 
     <div id="individual" class="page">
       <h1>Peso Individual</h1>
-      <input type="search" id="search-individual">
+      <input type="search" id="search-individual" placeholder="Buscar por tag...">
       <ul id="list-individual"></ul>
     </div>
 
     <div id="adicionar" class="page">
       <h1>Adicionar Vacas e Linhas</h1>
+
       <div class="inputs">
-            <h1>linhas</h1>
-            <input type="number" placeholder="x" id="x">
-            <input type="number" placeholder="y" id="y">
-            <input type="button" value="Adicionar" id="add">
+        <h2>Linhas</h2>
+        <input type="number" placeholder="x" id="x">
+        <input type="number" placeholder="y" id="y">
+        <input type="button" value="Adicionar" id="add">
       </div>
+
       <div class="inputs2">
-            <h1>Vacas</h1>
-            <input type="text" placeholder="tag code" id="tag_code">
-            <input type="number" placeholder="cow weight" id="cow_weight">
-            <input type="button" value="Adicionar" id="add2">
+        <h2>Vacas</h2>
+        <input type="text" placeholder="Tag code" id="tag_code">
+        <input type="number" placeholder="Peso da vaca" id="cow_weight">
+        <input type="button" value="Adicionar" id="add2">
+      </div>
+    </div>
+
+    <div id="remover" class="page">
+      <h1>Remover Linhas e Vacas</h1>
+      <div class="inputs">
+        <h2>Linhas</h2>
+        <input type="number" placeholder="x" id="x1">
+        <input type="number" placeholder="y" id="y1">
+        <input type="button" value="remover" id="remove">
+      </div>
+
+      <div class="inputs2">
+        <h2>Vacas</h2>
+        <input type="number" placeholder="id" id="id">
+        <input type="button" value="remover" id="rm">
       </div>
     </div>
   </div>
@@ -331,5 +357,5 @@
   <script src="/js/lister.js"></script>
   <script src="/js/graphic.js"></script>
   <script src="/js/lister2.js"></script>
-
+  <script src="/js/rm.js"></script>
 </body>
